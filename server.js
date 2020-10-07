@@ -2,12 +2,18 @@ const express = require('express');
 
 const server = express();
 
-server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
-});
-
 //custom middleware
 
-function logger(req, res, next) {}
+const logger = (req, res, next) => {
+	const time = new Date().toISOString();
+	console.log(`[${time}] ${req.ip} ${req.method} ${req.url}`);
+	next();
+};
+
+server.use(logger);
+
+server.listen(5555, () => {
+	console.log('Server listening in on port 5555.');
+});
 
 module.exports = server;
